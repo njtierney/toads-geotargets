@@ -1,0 +1,21 @@
+library(arrow)
+library(conflicted)
+library(crew)
+library(fs)
+library(geodist)
+library(geotargets)
+library(glue)
+library(here)
+library(janitor)
+library(ozmaps)
+library(sf)
+library(targets)
+library(tarchetypes)
+library(terra)
+library(tidyverse)
+
+# stats has a filter() too
+conflicts_prefer(dplyr::filter)
+conflicts_prefer(dplyr::select)
+# tidyr has an extract() too
+conflicts_prefer(terra::extract)

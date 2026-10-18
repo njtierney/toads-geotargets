@@ -1,0 +1,62 @@
+---
+title: "How fast is the cane toad moving west?"
+format: html
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(targets)
+library(dplyr)
+```
+
+The records are from every source in `data-raw/sources/`.
+
+```{r}
+#| label: counts
+tar_read(toads_source_count)
+tar_read(gg_decade_count)
+```
+
+Each source's own front: the mean position of its 10 westernmost records in each decade. Each one stops where its source stops.
+
+```{r}
+#| label: source-fronts
+tar_read(source_fronts) |>
+  group_by(source) |>
+  summarise(
+    decades = n(),
+    furthest_west = min(lon)
+  ) |>
+  ungroup()
+```
+
+The front from every source together.
+
+```{r}
+#| label: distances
+tar_read(toad_distances) |>
+  select(decade, lon, lat, distance_km)
+
+tar_read(gg_distances)
+```
+
+A straight line through the front, in degrees of longitude per year:
+
+```{r}
+#| label: model
+coef(tar_read(front_model))
+```
+
+```{r}
+#| label: maps
+tar_read(gg_decades)
+tar_read(gg_front)
+```
+
+Where could they go? A logistic regression of the records against random background points, on annual mean temperature and annual rainfall. The toad is still spreading, so this shows where it has been recorded, which is less than everywhere it could live.
+
+```{r}
+#| label: suitability
+tar_read(gg_suitability_map)
+```
