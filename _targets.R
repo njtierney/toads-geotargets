@@ -1,6 +1,6 @@
 # Climate raster, simple model of toad location, and map
 source("packages.R")
-source("functions.R")
+tar_source("R")
 
 # Demo 2 workers.
 tar_option_set(
@@ -80,7 +80,7 @@ tar_assign({
     write_csv_path("output/toad-distances.csv") |>
     tar_file()
 
-  report <- tar_quarto(path = "ch7/toad-report.qmd")
+  report <- tar_quarto(path = "docs/toad-report.qmd")
 }) |>
   # Each {crew} worker is a new R session, so the conflicts_prefer() calls in
   # packages.R don't reach it. This runs them before every target.
